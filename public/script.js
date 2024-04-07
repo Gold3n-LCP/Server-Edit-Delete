@@ -200,6 +200,12 @@ const showCraftForm = (e) => {
 };
 
 const deleteCraft = async (craft) => {
+  const confirmDelete = confirm("Are you sure you want to delete this craft?");
+
+  if (!confirmDelete) {
+    return;
+  }
+
   let response = await fetch(`api/crafts/${craft._id}`, {
     method: "DELETE",
     headers: {

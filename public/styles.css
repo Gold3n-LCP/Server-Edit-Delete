@@ -148,3 +148,16 @@ button {
 .uploadButton:hover {
   background-color: skyblue; /* Change background color on hover */
 }
+
+.confirmation-text {
+  color: #333;
+  font-size: 16px;
+}
+
+.confirmation-buttons button {
+  margin: 0 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

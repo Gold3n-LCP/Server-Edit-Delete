@@ -301,13 +301,13 @@ app.delete("/api/crafts/:id", (req, res) => {
 
 const validateCraft = (craft) => {
   const schema = Joi.object({
-    _id: Joi.allow(""),
-    supplies: Joi.allow(""),
+    _id: Joi.string().optional(),
+    supplies: Joi.array().items(Joi.string()),
     name: Joi.string().min(3).required(),
     description: Joi.string().min(3).required(),
-
-    image: Joi.allow(""),
+    image: Joi.string().optional(),
   });
+
   return schema.validate(craft);
 };
 
