@@ -240,12 +240,16 @@ app.get("/api/crafts", (req, res) => {
 });
 
 app.post("/api/crafts/", upload.single("img"), (req, res) => {
+  // Validate craft data
   const result = validateCraft(req.body);
 
   if (result.error) {
-    res.status(400).send(result.error.details[0].message);
+    // If validation fails, send a JSON response with the error message
+    res.status(400).json({ error: result.error.details[0].message });
+    return;
   }
 
+  // Create craft object
   const craft = {
     _id: crafts.length + 1,
     name: req.body.name,
@@ -253,12 +257,16 @@ app.post("/api/crafts/", upload.single("img"), (req, res) => {
     supplies: req.body.supplies.split(","),
   };
 
+  // Add image filename to craft object if file is uploaded
   if (req.file) {
     craft.image = req.file.filename;
   }
 
+  // Add craft to crafts array
   crafts.push(craft);
-  res.send(crafts);
+
+  // Send response with updated crafts array
+  res.status(201).json(crafts);
 });
 
 app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
@@ -301,11 +309,10 @@ app.delete("/api/crafts/:id", (req, res) => {
 
 const validateCraft = (craft) => {
   const schema = Joi.object({
-    _id: Joi.string().optional(),
-    supplies: Joi.array().items(Joi.string()),
+    _id: Joi.allow(""),
+    supplies: Joi.allow(""),
     name: Joi.string().min(3).required(),
     description: Joi.string().min(3).required(),
-    image: Joi.string().optional(),
   });
 
   return schema.validate(craft);

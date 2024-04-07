@@ -153,6 +153,11 @@ const addEditRecipe = async (e) => {
       method: "POST",
       body: formData,
     });
+    if (response.status === 400) {
+      alert(
+        "Your addition was not added to the main page because it did not meet the NAME or DESCRIPTION minimum character requirement of 3"
+      );
+    }
   } else {
     console.log("middle of a put sequence" + form._id.value);
     response = await fetch("/api/crafts/" + form._id.value, {
@@ -239,29 +244,6 @@ const openDialog = (id) => {
   });
   console.log(document.getElementById(id));
   document.getElementById(id).classList.remove("hidden");
-};
-
-const addCraft = async (e) => {
-  e.preventDefault();
-  const form = document.getElementById("add-craft-form");
-  const formData = new FormData(form);
-  let response;
-  formData.append("supplies", getSupplies());
-  console.log(...formData);
-
-  response = await fetch("api/crafts/", {
-    method: "POST",
-    body: formData,
-  });
-  console.log(response);
-  //successfully got data from server
-  if (response.status != 200) {
-    console.log("Error posting data");
-  }
-  await response.json();
-  resetForm();
-  document.getElementById("dialog").style.display = "none";
-  showCrafts();
 };
 
 showCrafts();
